@@ -61,7 +61,6 @@ const evaluateInput = (userInput) => {
         }
     }
     if (validatedUserChoice === "") {
-        // console.log("%c" + "Your choice is not valid, please try again!", "color: white; font-size: 24px; font-weight: bold;")
         return false
     } else {
         return true
@@ -76,9 +75,9 @@ const evaluateInput = (userInput) => {
 const evaluateRoundWinner = (userChoice, computerChoice) => {
     if (userChoice === computerChoice) {
         console.log("%c" + `Your choice: '${userChoice}' vs. Computer choice: '${computerChoice}'`, "color: white; font-size: 24px; font-weight: bold;");
-        console.log("%c" + "Draw! No points for both!", "color: yellow; font-size: 24px; font-weight: bold;")
+        console.log("%c" + "Draw, so try again!", "color: yellow; font-size: 24px; font-weight: bold;")
         console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
-        userChoice = prompt("Draw: Please insert your choice again: Scissors / Stone / Paper")
+        userChoice = getUserChoice()
         computerChoice = computerChoiceGenerator(options.length)
         evaluateRoundWinner(userChoice, computerChoice)
     } else {
@@ -155,21 +154,21 @@ const restartGame = () => {
  */
 const startGame = () => {
     new Promise((resolve, reject) => {
-        console.log("%c" + "Hello and welcome to a game of 'Rock, Paper Scissors'!", "color: white; font-size: 24px; font-weight: bold;");
-        console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
+        console.log("%c" + "Hello and welcome to a game of 'Rock, Paper Scissors'!", "color: white; font-size: 24px; font-weight: bold; ; background: gray;");
+        console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold; ;")
         setTimeout(() => {
             const shouldStart = confirm("Would you like to start playing?")
             if (shouldStart) {
-                console.log("%c" + "This game will go over five round! May the luck be on your Side!", "color: white; font-size: 24px; font-weight: bold;");
+                console.log("%c" + "This game will go over five rounds! May the luck be on your Side!", "color: white; font-size: 24px; font-weight: bold;");
                 resolve()
             } else {
-                console.log("%c" + "Sad, that you don't want to play, but still have a lovely day!", "color: white; font-size: 24px; font-weight: bold;");
+                console.log("%c" + "Sad, that you don't want to play, but have a lovely day!", "color: white; font-size: 24px; font-weight: bold;");
                 console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
             }
-        }, 1000);
+        }, 3000);
     }).then(() => {
         setTimeout(() => {
-            console.log("%c" + "Please note that only 'Rock, Paper Scissors' are accepted as answers!", "color: white; font-size: 24px; font-weight: bold;");
+            console.log("%c" + "Please note, that only 'Rock', 'Paper' or 'Scissors' are accepted as answers!", "color: white; font-size: 24px; font-weight: bold; ;");
             console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
             return
         }, 1000);
