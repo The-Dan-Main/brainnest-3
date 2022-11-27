@@ -76,20 +76,21 @@ const evaluateInput = (userInput) => {
 const evaluateRoundWinner = (userChoice, computerChoice) => {
     if (userChoice === computerChoice) {
         console.log("%c" + `Your choice: '${userChoice}' vs. Computer choice: '${computerChoice}'`, "color: white; font-size: 24px; font-weight: bold;");
-        console.log("%c" + "Draw! No points for both!", "color: white; font-size: 24px; font-weight: bold;")
+        console.log("%c" + "Draw! No points for both!", "color: yellow; font-size: 24px; font-weight: bold;")
         console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
         userChoice = prompt("Draw: Please insert your choice again: Scissors / Stone / Paper")
-        evaluateRoundWinner(userChoice, computerChoiceGenerator(options.length))
+        computerChoice = computerChoiceGenerator(options.length)
+        evaluateRoundWinner(userChoice, computerChoice)
     } else {
         for (let option of gameWinningOptions) {
             if (option.name === userChoice && option.beats === computerChoice) {
                 console.log("%c" + `Your choice: '${userChoice}' vs. Computer choice: '${computerChoice}'`, "color: white; font-size: 24px; font-weight: bold;");
-                console.log("%c" + "You won this round!", "color: white; font-size: 24px; font-weight: bold;")
+                console.log("%c" + "You won this round!", "color: green; font-size: 24px; font-weight: bold;")
                 console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
                 gameSetting.userCount++
             } else if (option.name === computerChoice && option.beats === userChoice) {
                 console.log("%c" + `Your choice: '${userChoice}' vs. Computer choice: '${computerChoice}'`, "color: white; font-size: 24px; font-weight: bold;");
-                console.log("%c" + "Computer won this round!", "color: white; font-size: 24px; font-weight: bold;")
+                console.log("%c" + "Computer won this round!", "color: orange; font-size: 24px; font-weight: bold;")
                 console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
                 gameSetting.computerCount++
             }
@@ -103,11 +104,11 @@ const evaluateRoundWinner = (userChoice, computerChoice) => {
 const evaluateGameWinner = () => {
     if (gameSetting.userCount > gameSetting.computerCount) {
         console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
-        console.log("%c" + "Horray, You won this game!", "color: white; font-size: 24px; font-weight: bold;")
+        console.log("%c" + "Horray, You won this game!", "color: green; font-size: 24px; font-weight: bold;")
         console.log("%c" + `Overview: Your Points: ${gameSetting.userCount} vs. Computer Points: ${gameSetting.computerCount}`, "color: white; font-size: 24px; font-weight: bold;")
     } else {
         console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
-        console.log("%c" + "Oh no, You did not win this game!", "color: white; font-size: 24px; font-weight: bold;")
+        console.log("%c" + "Oh no, You did not win this game!", "color: red; font-size: 24px; font-weight: bold;")
         console.log("%c" + `Overview: Computer Points: ${gameSetting.computerCount} vs. Your Points: ${gameSetting.userCount}`, "color: white; font-size: 24px; font-weight: bold;")
     }
 }
