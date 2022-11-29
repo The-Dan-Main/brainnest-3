@@ -28,6 +28,17 @@ const
  */
 const displayNewRound = () => {
     console.log("%c" + `---------- Round Nr. ${gameSetting.currentRound} / ${gameSetting.maxRounds} ----------`, "color: white; font-size: 24px; font-weight: bold;")
+    console.log("%c" + `---------- Current Points: You: ${gameSetting.userCount} vs. Computer: ${gameSetting.computerCount} ----------`, "color: white; font-size: 24px; font-weight: bold;")
+}
+
+/**
+ * Asks user to change the total number or rounds, default is 5 rounds.
+ */
+const askRounds = () => {
+    const isnumber = /^[0-9]$/
+    let newTotalRounds = prompt("How many rounds would you like to play?", 5)
+    newTotalRounds === null ? askRounds() :
+        !newTotalRounds.match(isnumber) ? askRounds() : gameSetting.maxRounds = newTotalRounds
 }
 
 /**
@@ -118,16 +129,15 @@ const evaluateGameWinner = () => {
  */
 const getUserChoice = () => {
     let userChoice = prompt("Please insert your choice: Scissors / Stone / Paper")
-    if (userChoice === null) {
-        console.log("%c" + "It smells weak in here! To quit is not an option!", "color: white; font-size: 24px; font-weight: bold;")
-        getUserChoice()
-    } else {
-        while (!evaluateInput(userChoice)) {
-            console.log("%c" + `This choice of '${userChoice}' not valid, please try again!`, "color: white; font-size: 24px; font-weight: bold;")
-            userChoice = prompt("Please insert your choice: Scissors / Stone / Paper")
-        }
-        return userChoice.toLowerCase()
+    while (userChoice === null) {
+        console.log("%c" + `To stop is not an option!`, "color: white; font-size: 24px; font-weight: bold;")
+        userChoice = prompt("Please insert your choice: Scissors / Stone / Paper")
     }
+    while (!evaluateInput(userChoice)) {
+        console.log("%c" + `This choice '${userChoice}' not valid, please try again!`, "color: white; font-size: 24px; font-weight: bold;")
+        userChoice = prompt("Please insert your choice: Scissors / Stone / Paper")
+    }
+    return userChoice.toLowerCase()
 }
 
 /**
@@ -159,61 +169,28 @@ const startGame = () => {
         setTimeout(() => {
             const shouldStart = confirm("Would you like to start playing?")
             if (shouldStart) {
-                console.log("%c" + "This game will go over five rounds! May the luck be on your Side!", "color: white; font-size: 24px; font-weight: bold;");
+                askRounds()
+                console.log("%c" + `This game will go over ${gameSetting.maxRounds} rounds! May the luck be on your Side!`, "color: white; font-size: 24px; font-weight: bold;");
                 resolve()
             } else {
                 console.log("%c" + "Sad, that you don't want to play, but have a lovely day!", "color: white; font-size: 24px; font-weight: bold;");
                 console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
             }
         }, 3000);
-    }).then(() => {
         setTimeout(() => {
             console.log("%c" + "Please note, that only 'Rock', 'Paper' or 'Scissors' are accepted as answers!", "color: white; font-size: 24px; font-weight: bold; ;");
             console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
-            return
-        }, 1000);
-    }).then(() => {
+        }, 5000);
         setTimeout(() => {
-            displayNewRound()
-            evaluateRoundWinner(getUserChoice(), computerChoiceGenerator(options.length))
-            increaseRound()
-            return
-        }, 1000);
-    }).then(() => {
-        setTimeout(() => {
-            displayNewRound()
-            evaluateRoundWinner(getUserChoice(), computerChoiceGenerator(options.length))
-            increaseRound()
-            return
-        }, 1000);
-    }).then(() => {
-        setTimeout(() => {
-            displayNewRound()
-            evaluateRoundWinner(getUserChoice(), computerChoiceGenerator(options.length))
-            increaseRound()
-            return
-        }, 1000);
-    }).then(() => {
-        setTimeout(() => {
-            displayNewRound()
-            evaluateRoundWinner(getUserChoice(), computerChoiceGenerator(options.length))
-            increaseRound()
-            return
-        }, 1000);
-    }).then(() => {
-        setTimeout(() => {
-            displayNewRound()
-            evaluateRoundWinner(getUserChoice(), computerChoiceGenerator(options.length))
-            increaseRound()
-            return
-        }, 1000);
+            for (let index = 1; index <= gameSetting.maxRounds; index++) {
+                displayNewRound()
+                evaluateRoundWinner(getUserChoice(), computerChoiceGenerator(options.length))
+                increaseRound()
+            }
+        }, 7000);
     }).then(() => {
         setTimeout(() => {
             evaluateGameWinner()
-            return
-        }, 1000);
-    }).then(() => {
-        setTimeout(() => {
             restartGame()
             return
         }, 2000);
