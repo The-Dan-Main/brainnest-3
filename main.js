@@ -73,6 +73,7 @@ const computerChoiceGenerator = (range) => {
  * @return {boolean} as boolean
  */
 const evaluateInput = (userInput) => {
+    if (userInput === null) return false
     let validatedUserChoice = "";
     for (let option of options) {
         if (userInput.toLowerCase().trim() === option) {
