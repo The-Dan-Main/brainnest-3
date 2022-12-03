@@ -35,10 +35,19 @@ const displayNewRound = () => {
  * Asks user to change the total number or rounds, default is 5 rounds.
  */
 const askRounds = () => {
-    const isnumber = /^[0-9]$/
     let newTotalRounds = prompt("How many rounds would you like to play?", 5)
-    newTotalRounds === null ? askRounds() :
-        !newTotalRounds.match(isnumber) ? askRounds() : gameSetting.maxRounds = newTotalRounds
+    const isnumber = /^[0-9]$/
+    if (newTotalRounds === null) {
+        return null
+    } else {
+        if (newTotalRounds.match(isnumber)[0] !== undefined) {
+            gameSetting.maxRounds = newTotalRounds
+            return newTotalRounds
+        } else {
+            console.log("%c" + `This choice not a number, please try again!`, "color: white; font-size: 24px; font-weight: bold;")
+            askRounds()
+        }
+    }
 }
 
 /**
@@ -66,7 +75,7 @@ const computerChoiceGenerator = (range) => {
 const evaluateInput = (userInput) => {
     let validatedUserChoice = "";
     for (let option of options) {
-        if (userInput.toLowerCase() === option) {
+        if (userInput.toLowerCase().trim() === option) {
             validatedUserChoice = option
             return true
         }
@@ -130,14 +139,15 @@ const evaluateGameWinner = () => {
 const getUserChoice = () => {
     let userChoice = prompt("Please insert your choice: Scissors / Stone / Paper")
     while (userChoice === null) {
-        console.log("%c" + `To stop is not an option!`, "color: white; font-size: 24px; font-weight: bold;")
-        userChoice = prompt("Please insert your choice: Scissors / Stone / Paper")
+        // console.log("%c" + `To stop is not an option!`, "color: white; font-size: 24px; font-weight: bold;")
+        // userChoice = prompt("Please insert your choice: Scissors / Stone / Paper")
+        return null
     }
     while (!evaluateInput(userChoice)) {
         console.log("%c" + `This choice '${userChoice}' not valid, please try again!`, "color: white; font-size: 24px; font-weight: bold;")
         userChoice = prompt("Please insert your choice: Scissors / Stone / Paper")
     }
-    return userChoice.toLowerCase()
+    return userChoice.toLowerCase().trim()
 }
 
 /**
@@ -163,38 +173,36 @@ const restartGame = () => {
  * Contains the whole flow of the game incl. Start and possible restart!
  */
 const startGame = () => {
-    new Promise((resolve, reject) => {
         console.log("%c" + "Hello and welcome to a game of 'Rock, Paper Scissors'!", "color: white; font-size: 24px; font-weight: bold; ; background: gray;");
         console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold; ;")
-        setTimeout(() => {
-            const shouldStart = confirm("Would you like to start playing?")
-            if (shouldStart) {
-                askRounds()
+        const shouldStart = confirm("Would you like to start playing?")
+        if (shouldStart !== false) {
+            let nmbRounds = askRounds()
+            if (nmbRounds !== undefined && nmbRounds !== null ) {
                 console.log("%c" + `This game will go over ${gameSetting.maxRounds} rounds! May the luck be on your Side!`, "color: white; font-size: 24px; font-weight: bold;");
-                resolve()
-            } else {
+                console.log("%c" + "Please note, that only 'Rock', 'Paper' or 'Scissors' are accepted as answers!", "color: white; font-size: 24px; font-weight: bold; ;");
+                console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
+                for (let index = 1; index <= gameSetting.maxRounds; index++) {
+                    displayNewRound()
+                    let UserChoice = getUserChoice()
+                    if (UserChoice !== null) {
+                        evaluateRoundWinner(UserChoice, computerChoiceGenerator(options.length))
+                        increaseRound()
+                    } else {
+                        break
+                    }
+                }
+                evaluateGameWinner()
+                restartGame()
+            }
+            else {
                 console.log("%c" + "Sad, that you don't want to play, but have a lovely day!", "color: white; font-size: 24px; font-weight: bold;");
                 console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
             }
-        }, 3000);
-        setTimeout(() => {
-            console.log("%c" + "Please note, that only 'Rock', 'Paper' or 'Scissors' are accepted as answers!", "color: white; font-size: 24px; font-weight: bold; ;");
+        } else {
+            console.log("%c" + "Sad, that you don't want to play, but have a lovely day!", "color: white; font-size: 24px; font-weight: bold;");
             console.log("%c" + "------------------------------------------------", "color: white; font-size: 24px; font-weight: bold;")
-        }, 5000);
-        setTimeout(() => {
-            for (let index = 1; index <= gameSetting.maxRounds; index++) {
-                displayNewRound()
-                evaluateRoundWinner(getUserChoice(), computerChoiceGenerator(options.length))
-                increaseRound()
-            }
-        }, 7000);
-    }).then(() => {
-        setTimeout(() => {
-            evaluateGameWinner()
-            restartGame()
-            return
-        }, 2000);
-    })
+        }
 }
 
 startGame()
