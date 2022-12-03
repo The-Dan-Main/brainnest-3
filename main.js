@@ -35,8 +35,8 @@ const displayNewRound = () => {
  * Asks user to change the total number or rounds, default is 5 rounds.
  */
 const askRounds = () => {
-    let newTotalRounds = prompt("How many rounds would you like to play?", 5)
-    const isnumber = /^[0-9]$/
+    let newTotalRounds = prompt("How many rounds would you like to play? (maximum is 99 rounds)")
+    const isnumber = /^[0-9]|[1-9]$/
     if (newTotalRounds === null) {
         return null
     } else {
