@@ -157,7 +157,7 @@ const getUserChoice = () => {
 const restartGame = () => {
     const shouldRestart = confirm("Would you like to play again?")
     if (shouldRestart) {
-        gameSetting.computerCount = 0
+        gameSetting.userCount = 0
         gameSetting.computerCount = 0
         gameSetting.currentRound = 1
         console.clear()
